@@ -1,0 +1,6 @@
+rootProject.name = 'typesafecomparator'
+
+include 'codegen'
+include 'main'
+
+enableFeaturePreview('STABLE_PUBLISHING')
