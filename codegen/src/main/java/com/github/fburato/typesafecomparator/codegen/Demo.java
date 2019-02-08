@@ -62,7 +62,7 @@ public class Demo {
         f.getParentFile().mkdirs();
         f.createNewFile();
         PrintStream fileOutputStream = new PrintStream(f);
-        final ChainComparatorPrinter printer = new ChainComparatorPrinter(false,8,fileOutputStream);
+        final ChainComparatorPrinter printer = new ChainComparatorPrinter(false,30,fileOutputStream);
         printer.print();
     }
 }

@@ -2,13 +2,6 @@ plugins {
     id 'java'
 }
 
-
-sourceSets {
-    generated {
-        java.srcDir "${buildDir}/generated/src/java"
-    }
-}
-
 group 'com.github.fburato'
 version '1.0-SNAPSHOT'
 
