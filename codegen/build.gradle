@@ -2,6 +2,12 @@ plugins {
     id 'java'
 }
 
+sourceSets {
+    generated {
+        java.srcDir "${buildDir}/generated/src/java"
+    }
+}
+
 group 'com.github.fburato'
 version '1.0-SNAPSHOT'
 
@@ -11,6 +17,28 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+task('generateClasses', type: JavaExec) {
+    dependsOn('compileJava')
+    main = "com.github.fburato.typesafecomparator.codegen.Demo"
+    classpath = sourceSets.main.runtimeClasspath
+    args = Arrays.asList("${buildDir}/generated/src/java/com/github/fburato/typesafecomparator/ChainComparator8.java")
+}
+
+
+task myCompile(type: JavaCompile) {
+    dependsOn('generateClasses')
+    source = fileTree(dir: "${buildDir}/generated/src/java", include: '**/*.java')
+    classpath = sourceSets.main.output
+    setDestinationDir(sourceSets.main.output.getClassesDirs().singleFile)
+}
+
+jar {
+    exclude('com/github/fburato/typesafecomparator/codegen/**')
+}
+
+jar.dependsOn(myCompile)

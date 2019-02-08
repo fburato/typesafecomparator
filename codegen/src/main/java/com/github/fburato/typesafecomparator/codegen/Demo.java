@@ -1,7 +1,6 @@
 package com.github.fburato.typesafecomparator.codegen;
-
+import java.io.File;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,7 +28,9 @@ public class Demo {
 
         private void printHeader() {
             final Supplier<String> printTypeVariables = () -> "<" + IntStream.range(0,comparators).mapToObj(i -> "T"+(i+1)).collect(Collectors.joining(",")) + ">";
-            printWriter.print("public class ChainComparator" + comparators + printTypeVariables.get() + " extends InternalComparator {\n");
+            printWriter.println("package com.github.fburato.typesafecomparator;");
+            printWriter.println("import java.util.Comparator;");
+            printWriter.print("public class ChainComparator" + comparators + printTypeVariables.get() + "{\n");
 
         }
 
@@ -45,8 +46,8 @@ public class Demo {
                     String.format("final Comparator<T%d> t%dComparator",i+1,i+1)).collect(Collectors.joining(", ")
             );
             final String body = IntStream.range(0,comparators).mapToObj( i ->
-                    String.format("this.t%dComparator = t%dComparator",i+1,i+1)
-            ).collect(Collectors.joining(";\n"));
+                    String.format("this.t%dComparator = t%dComparator;",i+1,i+1)
+            ).collect(Collectors.joining("\n"));
             printWriter.print(String.format("public ChainComparator%d(%s){\n%s}",comparators,parameters,body));
         }
 
@@ -56,8 +57,12 @@ public class Demo {
 
     }
 
-    public static void main(String[] argv) {
-        final ChainComparatorPrinter printer = new ChainComparatorPrinter(false,8,System.out);
+    public static void main(String[] argv) throws Exception {
+        final File f = new File(argv[0]);
+        f.getParentFile().mkdirs();
+        f.createNewFile();
+        PrintStream fileOutputStream = new PrintStream(f);
+        final ChainComparatorPrinter printer = new ChainComparatorPrinter(false,8,fileOutputStream);
         printer.print();
     }
 }
