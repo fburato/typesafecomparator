@@ -31,9 +31,9 @@ dependencies {
 
 task('generateClasses', type: JavaExec) {
     dependsOn('compileJava')
-    main = "com.github.fburato.typesafecomparator.codegen.Demo"
+    main = "com.github.fburato.typesafecomparator.codegen.Generator"
     classpath = sourceSets.main.runtimeClasspath
-    args = Arrays.asList("${buildDir}/generated/src/java/com/github/fburato/typesafecomparator/ChainComparator30.java")
+    args = Arrays.asList("${buildDir}/generated/src/java","50")
 }
 
 

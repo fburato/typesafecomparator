@@ -16,13 +16,13 @@ import static com.github.fburato.typesafecomparator.codegen.CodeGenUtils.qualifi
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("ChainComparatorGenerator")
-public class ChainComparatorGeneratorTest {
+class ChainComparatorGeneratorTest {
 
-  static InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+  private static InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
   @BeforeAll
   static void setUpCompiler() {
     IntStream
-        .range(0,30)
+        .range(0,50)
         .forEach( i -> assertCompiles(qualifiedClassName("Function"+i),new FunctionGenerator(i),compiler));
   }
 
@@ -35,26 +35,27 @@ public class ChainComparatorGeneratorTest {
   @DisplayName("compiled class")
   class CompiledClassTest {
 
-    Class<?> finalTestee = assertCompiles(qualifiedClassName("ChainComparator2"), new ChainComparatorGenerator(2,true), compiler);
+    Class<?> finalTestee = assertCompiles(qualifiedClassName("ChainComparator50"), new ChainComparatorGenerator(50,true), compiler);
+    Class<?> twoComparatorTestee = assertCompiles(qualifiedClassName("ChainComparator2"), new ChainComparatorGenerator(2,true), compiler);
     Class<?> nonFinalTestee = assertCompiles(qualifiedClassName("ChainComparator1"), new ChainComparatorGenerator(1),compiler);
     @Test
     @DisplayName("should extend Comparator")
     void testHasInternalFunction() {
       assertThat(Comparator.class).isAssignableFrom(nonFinalTestee);
-      assertThat(Comparator.class).isAssignableFrom(finalTestee);
+      assertThat(Comparator.class).isAssignableFrom(twoComparatorTestee);
     }
 
     @Test
     @DisplayName("should have constructor that takes a ChainableComparator and many Comparators")
     void testChainableComparator() throws Exception {
-      assertThat(finalTestee.getConstructor(ChainableComparator.class,Comparator.class,Comparator.class)).isNotNull();
+      assertThat(twoComparatorTestee.getConstructor(ChainableComparator.class,Comparator.class,Comparator.class)).isNotNull();
       assertThat(nonFinalTestee.getConstructor(ChainableComparator.class,Comparator.class)).isNotNull();
     }
 
     @Test
     @DisplayName("should have a chain method with a getter and a comparator")
     void testBasicChain() throws Exception {
-      assertThat(finalTestee.getMethod("chain", Function.class, Comparator.class)).isNotNull();
+      assertThat(twoComparatorTestee.getMethod("chain", Function.class, Comparator.class)).isNotNull();
       assertThat(nonFinalTestee.getMethod("chain", Function.class, Comparator.class)).isNotNull();
     }
 
@@ -75,8 +76,13 @@ public class ChainComparatorGeneratorTest {
 
     @Test
     @DisplayName("should add as many chain method as types")
-    void testChain() throws Exception {
+    void testChain(){
       assertThat(Arrays.stream(finalTestee.getMethods())
+          .map(Method::getName)
+          .filter(s -> s.equals("chain"))
+          .collect(Collectors.toList())
+      ).hasSize(51);
+      assertThat(Arrays.stream(twoComparatorTestee.getMethods())
           .map(Method::getName)
           .filter(s -> s.equals("chain"))
           .collect(Collectors.toList())
