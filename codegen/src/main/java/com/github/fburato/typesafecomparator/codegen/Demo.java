@@ -1,5 +1,5 @@
 package com.github.fburato.typesafecomparator.codegen;
-import java.io.File;
+
 import java.io.PrintStream;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -27,14 +27,16 @@ public class Demo {
 
 
         private void printHeader() {
-            final Supplier<String> printTypeVariables = () -> "<" + IntStream.range(0,comparators).mapToObj(i -> "T"+(i+1)).collect(Collectors.joining(",")) + ">";
-            printWriter.println("package com.github.fburato.typesafecomparator;");
+            final Supplier<String> printTypeVariables = () -> "<T," + IntStream.range(0,comparators).mapToObj(i -> "T"+(i+1)).collect(Collectors.joining(",")) + ">";
+            printWriter.println("package com.github.fburato.typesafecomparator.api;");
             printWriter.println("import java.util.Comparator;");
+            //printWriter.println("import com.github.fburato.typesafecomparator.api.ChainableComparator;");
             printWriter.print("public class ChainComparator" + comparators + printTypeVariables.get() + "{\n");
 
         }
 
         private void printFields() {
+            printWriter.print("private final ChainableComparator<T> chainable;");
             IntStream.range(0,comparators).forEach(i ->
                     printWriter.print(String.format("private final Comparator<%s> t%dComparator;\n","T"+(i+1),(i+1)))
             );
@@ -42,10 +44,11 @@ public class Demo {
         }
 
         private void printConstructor() {
-            final String parameters = IntStream.range(0,comparators).mapToObj( i ->
+            final String parameters = "final ChainableComparator<T> chainable, " + IntStream.range(0,comparators).mapToObj( i ->
                     String.format("final Comparator<T%d> t%dComparator",i+1,i+1)).collect(Collectors.joining(", ")
             );
-            final String body = IntStream.range(0,comparators).mapToObj( i ->
+            final String body = "this.chainable = chainable;" +
+                IntStream.range(0,comparators).mapToObj( i ->
                     String.format("this.t%dComparator = t%dComparator;",i+1,i+1)
             ).collect(Collectors.joining("\n"));
             printWriter.print(String.format("public ChainComparator%d(%s){\n%s}",comparators,parameters,body));
@@ -55,14 +58,5 @@ public class Demo {
             printWriter.print("}\n");
         }
 
-    }
-
-    public static void main(String[] argv) throws Exception {
-        final File f = new File(argv[0]);
-        f.getParentFile().mkdirs();
-        f.createNewFile();
-        PrintStream fileOutputStream = new PrintStream(f);
-        final ChainComparatorPrinter printer = new ChainComparatorPrinter(false,30,fileOutputStream);
-        printer.print();
     }
 }
