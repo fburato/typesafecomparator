@@ -26,7 +26,7 @@ class FunctionGeneratorTest {
   @DisplayName("compiled class")
   class CompiledClassTests {
 
-    Class<?> testee = assertCompiles(qualifiedClassName("Function1"),new FunctionGenerator(1));
+    final Class<?> testee = assertCompiles(qualifiedClassName("Function1"),new FunctionGenerator(1));
     @Test
     @DisplayName("should be an interface")
     void testInterface() {

@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("ChainComparatorGenerator")
 class ChainComparatorGeneratorTest {
 
-  private static InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+  private static final InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
   @BeforeAll
   static void setUpCompiler() {
     IntStream
@@ -26,18 +26,13 @@ class ChainComparatorGeneratorTest {
         .forEach( i -> assertCompiles(qualifiedClassName("Function"+i),new FunctionGenerator(i),compiler));
   }
 
-  @Test
-  @DisplayName("should compile ChainComparator with 1 type parameter")
-  void testBaseCompile() {
-  }
-
   @Nested
   @DisplayName("compiled class")
   class CompiledClassTest {
 
-    Class<?> finalTestee = assertCompiles(qualifiedClassName("ChainComparator50"), new ChainComparatorGenerator(50,true), compiler);
-    Class<?> twoComparatorTestee = assertCompiles(qualifiedClassName("ChainComparator2"), new ChainComparatorGenerator(2,true), compiler);
-    Class<?> nonFinalTestee = assertCompiles(qualifiedClassName("ChainComparator1"), new ChainComparatorGenerator(1),compiler);
+    final Class<?> finalTestee = assertCompiles(qualifiedClassName("ChainComparator50"), new ChainComparatorGenerator(50,true), compiler);
+    final Class<?> twoComparatorTestee = assertCompiles(qualifiedClassName("ChainComparator2"), new ChainComparatorGenerator(2,true), compiler);
+    final Class<?> nonFinalTestee = assertCompiles(qualifiedClassName("ChainComparator1"), new ChainComparatorGenerator(1),compiler);
     @Test
     @DisplayName("should extend Comparator")
     void testHasInternalFunction() {

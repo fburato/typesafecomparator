@@ -63,7 +63,7 @@ class TypeSafeChainComparatorTest {
   @DisplayName("created with create")
   class CreateTest{
 
-    TypeSafeChainComparator<Data> testee = TypeSafeChainComparator.create();
+    final TypeSafeChainComparator<Data> testee = TypeSafeChainComparator.create();
 
     @BeforeEach
     void setUp(){
@@ -91,9 +91,9 @@ class TypeSafeChainComparatorTest {
   @Nested
   @DisplayName("created with createNullSafe")
   class TestNullSafe{
-    TypeSafeChainComparator<Data> testee = TypeSafeChainComparator.createNullSafe();
+    final TypeSafeChainComparator<Data> testee = TypeSafeChainComparator.createNullSafe();
 
-    Comparator<String> stringLengthComparator = (s1,s2) -> s1.length() - s2.length();
+    final Comparator<String> stringLengthComparator = Comparator.comparingInt(String::length);
 
     @BeforeEach
     void setUp(){
@@ -138,9 +138,9 @@ class TypeSafeChainComparatorTest {
   @DisplayName("addComparator")
   class AddComparatorTest {
 
-    Comparator<String> stringLengthComparator = (s1,s2) -> s1.length() - s2.length();
+    final Comparator<String> stringLengthComparator = Comparator.comparingInt(String::length);
 
-    Comparator<Data> testee = TypeSafeChainComparator.<Data>createNullSafe()
+    final Comparator<Data> testee = TypeSafeChainComparator.<Data>createNullSafe()
         .addComparator(stringLengthComparator)
         .addComparator(Integer::compareTo)
         .addComparator(Double::compareTo)

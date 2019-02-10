@@ -24,7 +24,7 @@ class ComparatorDecoratorsTest {
   @DisplayName("null safe decorator")
   class NullSafeTest {
 
-    Comparator<String> comparator = (s1,s2) -> s1.length() - s2.length();
+    final Comparator<String> comparator = Comparator.comparingInt(String::length);
     @Test
     @DisplayName("should allow null-null comparisons")
     void testNullNull() {
@@ -46,7 +46,7 @@ class ComparatorDecoratorsTest {
     @Test
     @DisplayName("should allow notNull-notNull comparisons and apply real comparator")
     void testNotNullNotNull() {
-      assertThat(ComparatorDecorators.nullSafe.decorate(comparator).compare("foobar","fo")).isEqualTo(4);
+      assertThat(ComparatorDecorators.nullSafe.decorate(comparator).compare("foobar","fo")).isGreaterThan(0);
     }
   }
 }

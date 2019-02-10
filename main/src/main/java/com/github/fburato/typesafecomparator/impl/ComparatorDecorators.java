@@ -6,14 +6,14 @@ import java.util.Comparator;
 
 public final class ComparatorDecorators {
 
-  public static ComparatorDecorator identity = new ComparatorDecorator() {
+  public static final ComparatorDecorator identity = new ComparatorDecorator() {
     @Override
     public <S> Comparator<S> decorate(Comparator<S> comparator) {
       return comparator;
     }
   };
 
-  public static ComparatorDecorator nullSafe = new ComparatorDecorator() {
+  public static final ComparatorDecorator nullSafe = new ComparatorDecorator() {
     @Override
     public <S> Comparator<S> decorate(Comparator<S> comparator) {
       return (s1,s2) -> {

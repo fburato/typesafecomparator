@@ -55,8 +55,9 @@ class ChainComparatorsTest {
   @DisplayName("base chain")
   class BaseChainTest {
     @SuppressWarnings("unchecked")
+    final
     ChainableComparator<Data> mockComparator = mock(ChainableComparator.class);
-    ChainComparator1<Data,String> testee = new ChainComparator1<>(mockComparator,null);
+    final ChainComparator1<Data,String> testee = new ChainComparator1<>(mockComparator,null);
     @Test
     @DisplayName("should invoke constructor chainable comparator with arguments")
     void testCall() {
@@ -79,9 +80,10 @@ class ChainComparatorsTest {
   @DisplayName("implicit chain")
   class ImplicitChainTest{
     @SuppressWarnings("unchecked")
+    final
     ChainableComparator<Data> mockComparator = mock(ChainableComparator.class);
-    Comparator<String> c = String::compareTo;
-    ChainComparator1<Data,String> testee = new ChainComparator1<>(mockComparator,c);
+    final Comparator<String> c = String::compareTo;
+    final ChainComparator1<Data,String> testee = new ChainComparator1<>(mockComparator,c);
 
     @Test
     @DisplayName("should invoke constructor chainable comparator with construction comparator")
@@ -107,15 +109,18 @@ class ChainComparatorsTest {
   @DisplayName("addComparator")
   class TestAddComparator {
     @SuppressWarnings("unchecked")
+    final
     ChainableComparator<Data> mockComparator = mock(ChainableComparator.class);
     @SuppressWarnings("unchecked")
+    final
     Function1<Data,String> f1 = mock(Function1.class);
     @SuppressWarnings("unchecked")
+    final
     Function2<Data,Integer> f2 = mock(Function2.class);
-    Comparator<String> cstring = String::compareTo;
-    Comparator<Integer> cint = Integer::compareTo;
+    final Comparator<String> cstring = String::compareTo;
+    final Comparator<Integer> cint = Integer::compareTo;
 
-    ChainComparator1<Data,String> testee = new ChainComparator1<>(mockComparator,cstring);
+    final ChainComparator1<Data,String> testee = new ChainComparator1<>(mockComparator,cstring);
 
     @Test
     @DisplayName("should return an higher order chain comparator with all the original comparators")

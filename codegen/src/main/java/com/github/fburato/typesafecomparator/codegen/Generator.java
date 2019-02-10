@@ -8,7 +8,7 @@ public class Generator {
 
   private static final String apiPackage = String.join(File.separator,"com.github.fburato.typesafecomparator.api".split("\\."));
 
-  public static void main(String[] argv) throws Exception{
+  public static void main(String[] argv) {
     final String baseDir = argv[0];
     final int types = Integer.parseInt(argv[1]);
     final File baseDirectory = new File(baseDir + File.separator + apiPackage);
