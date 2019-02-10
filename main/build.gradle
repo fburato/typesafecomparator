@@ -2,6 +2,21 @@ plugins {
     id 'java'
 }
 
+
+apply plugin: "jacoco"
+
+
+jacoco {
+    toolVersion = "0.8.1"
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
 group 'com.github.fburato'
 version '1.0-SNAPSHOT'
 
@@ -9,6 +24,11 @@ sourceCompatibility = 1.8
 
 test {
     useJUnitPlatform()
+    jacoco {
+        append = true
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
 }
 
 
