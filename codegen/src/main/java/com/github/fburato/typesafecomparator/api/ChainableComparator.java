@@ -4,5 +4,5 @@ import java.util.Comparator;
 import java.util.function.Function;
 
 public interface ChainableComparator<T> extends Comparator<T> {
-  <S> void chain(Function<T,S> fieldGetter, Comparator<S> sComparator);
+  <S> ChainableComparator<T> chain(Function<T,S> fieldGetter, Comparator<S> sComparator);
 }

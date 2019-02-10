@@ -1,6 +1,5 @@
 package com.github.fburato.typesafecomparator.api;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -133,7 +132,7 @@ class ChainComparatorsTest {
       verify(mockComparator).chain(expectedF1,cstring);
       verify(mockComparator).chain(expectedF2,cint);
     }
-    
+
     @Test
     @DisplayName("should return higher order chain comparator which returns itself on chain")
     void testReturn() {
