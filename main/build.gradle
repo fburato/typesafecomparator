@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+    id 'maven'
+    id 'signing'
 }
 
 
@@ -17,9 +20,8 @@ jacocoTestReport {
     }
 }
 
-group 'com.github.fburato'
-version '1.0-SNAPSHOT'
-
+version = '0.1-SNAPSHOT'
+archivesBaseName = 'typesafecomparator-impl'
 sourceCompatibility = 1.8
 
 test {
@@ -40,6 +42,101 @@ jar {
 }
 
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            pom {
+                name = 'Typesafecomparator Implementation'
+                description = 'Typesafecomparator Implementation'
+                url = 'https://github.com/fburato/typesafecomparator'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'frank'
+                        name = 'Francesco Burato'
+                        email = 'frankburato-github@yahoo.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:fburato/typesafecomparator.git'
+                    developerConnection = 'scm:git:git@github.com:fburato/typesafecomparator.git'
+                    url = 'https://github.com/fburato/typesafecomparator'
+                }
+            }
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Typesafecomparator Impl'
+                packaging 'jar'
+                description 'Typesafecomparator Implementation'
+                url 'https://github.com/fburato/typesafecomparator'
+
+                scm {
+                    connection = 'scm:git:git@github.com:fburato/typesafecomparator.git'
+                    developerConnection = 'scm:git:git@github.com:fburato/typesafecomparator.git'
+                    url = 'https://github.com/fburato/typesafecomparator'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'frank'
+                        name = 'Francesco Burato'
+                        email = 'frankburato-github@yahoo.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
 
 dependencies {
     compile project(':codegen')
@@ -47,8 +144,4 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:5.4.0")
     testCompile("org.assertj:assertj-core:3.11.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.4.0")
-}
-
-repositories {
-    mavenCentral()
 }
