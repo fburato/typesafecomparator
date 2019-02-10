@@ -20,7 +20,6 @@ jacocoTestReport {
     }
 }
 
-version = '0.1-SNAPSHOT'
 archivesBaseName = 'typesafecomparator-impl'
 sourceCompatibility = 1.8
 

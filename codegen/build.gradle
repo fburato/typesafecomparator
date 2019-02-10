@@ -26,7 +26,6 @@ sourceSets {
     }
 }
 
-version = '0.1-SNAPSHOT'
 archivesBaseName = 'typesafecomparator-api'
 sourceCompatibility = 1.8
 
