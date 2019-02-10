@@ -23,7 +23,7 @@ public class FunctionGenerator implements CodeGenerator {
 
   private void printDeclaration(PrintWriter writer) {
     writer.println("@FunctionalInterface");
-    writer.println("public interface Function"+suffix+" <T1,T2> extends FunctionLike<T1,T2> {");
+    writer.println("public interface Function" + suffix + " <T1,T2> extends FunctionLike<T1,T2> {");
   }
 
   private void printFooter(PrintWriter writer) {

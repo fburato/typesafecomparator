@@ -3,10 +3,10 @@ package com.github.fburato.typesafecomparator.api;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface FunctionLike<T1,T2> {
+public interface FunctionLike<T1, T2> {
   T2 apply(T1 value);
 
-  default Function<T1,T2> asFunction() {
+  default Function<T1, T2> asFunction() {
     return this::apply;
   }
 }

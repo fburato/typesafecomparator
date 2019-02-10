@@ -31,9 +31,9 @@ public class GeneratorTest {
   void testFunction() throws Exception {
     File output = temporaryFolder.createDirectory("out");
 
-    Generator.main(new String[]{output.getAbsolutePath(),"20"});
+    Generator.main(new String[]{output.getAbsolutePath(), "20"});
 
-    String expectedDir = Paths.get(output.getAbsolutePath(),"com","github","fburato","typesafecomparator","api").toString();
+    String expectedDir = Paths.get(output.getAbsolutePath(), "com", "github", "fburato", "typesafecomparator", "api").toString();
     assertThat(new File(expectedDir))
         .exists()
         .isDirectory();
@@ -42,9 +42,9 @@ public class GeneratorTest {
         .map(File::getName)
         .collect(Collectors.toList()))
         .containsAnyElementsOf(IntStream
-            .rangeClosed(1,20)
-        .mapToObj( i -> "Function" + i +".java")
-        .collect(Collectors.toList()));
+            .rangeClosed(1, 20)
+            .mapToObj(i -> "Function" + i + ".java")
+            .collect(Collectors.toList()));
   }
 
   @Test
@@ -52,16 +52,16 @@ public class GeneratorTest {
   void testChainComparator() throws Exception {
     File output = temporaryFolder.createDirectory("out");
 
-    Generator.main(new String[]{output.getAbsolutePath(),"20"});
+    Generator.main(new String[]{output.getAbsolutePath(), "20"});
 
-    String expectedDir = Paths.get(output.getAbsolutePath(),"com","github","fburato","typesafecomparator","api").toString();
+    String expectedDir = Paths.get(output.getAbsolutePath(), "com", "github", "fburato", "typesafecomparator", "api").toString();
     assertThat(Arrays
         .stream(new File(expectedDir).listFiles())
         .map(File::getName)
         .collect(Collectors.toList()))
         .containsAnyElementsOf(IntStream
-            .rangeClosed(1,20)
-            .mapToObj( i -> "ChainComparator" + i +".java")
+            .rangeClosed(1, 20)
+            .mapToObj(i -> "ChainComparator" + i + ".java")
             .collect(Collectors.toList()));
   }
 }

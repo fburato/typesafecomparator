@@ -1,7 +1,10 @@
 package com.github.fburato.typesafecomparator.codegen;
 
 import com.github.fburato.typesafecomparator.api.ChainableComparator;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.mdkt.compiler.InMemoryJavaCompiler;
 
 import java.lang.reflect.Method;
@@ -13,26 +16,28 @@ import java.util.stream.IntStream;
 
 import static com.github.fburato.typesafecomparator.codegen.CodeGenUtils.assertCompiles;
 import static com.github.fburato.typesafecomparator.codegen.CodeGenUtils.qualifiedClassName;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ChainComparatorGenerator")
 class ChainComparatorGeneratorTest {
 
   private static final InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+
   @BeforeAll
   static void setUpCompiler() {
     IntStream
-        .rangeClosed(1,50)
-        .forEach( i -> assertCompiles(qualifiedClassName("Function"+i),new FunctionGenerator(i),compiler));
+        .rangeClosed(1, 50)
+        .forEach(i -> assertCompiles(qualifiedClassName("Function" + i), new FunctionGenerator(i), compiler));
   }
 
   @Nested
   @DisplayName("compiled class")
   class CompiledClassTest {
 
-    final Class<?> finalTestee = assertCompiles(qualifiedClassName("ChainComparator50"), new ChainComparatorGenerator(50,true), compiler);
-    final Class<?> twoComparatorTestee = assertCompiles(qualifiedClassName("ChainComparator2"), new ChainComparatorGenerator(2,true), compiler);
-    final Class<?> nonFinalTestee = assertCompiles(qualifiedClassName("ChainComparator1"), new ChainComparatorGenerator(1),compiler);
+    final Class<?> finalTestee = assertCompiles(qualifiedClassName("ChainComparator50"), new ChainComparatorGenerator(50, true), compiler);
+    final Class<?> twoComparatorTestee = assertCompiles(qualifiedClassName("ChainComparator2"), new ChainComparatorGenerator(2, true), compiler);
+    final Class<?> nonFinalTestee = assertCompiles(qualifiedClassName("ChainComparator1"), new ChainComparatorGenerator(1), compiler);
+
     @Test
     @DisplayName("should extend Comparator")
     void testHasInternalFunction() {
@@ -43,8 +48,8 @@ class ChainComparatorGeneratorTest {
     @Test
     @DisplayName("should have constructor that takes a ChainableComparator and many Comparators")
     void testChainableComparator() throws Exception {
-      assertThat(twoComparatorTestee.getConstructor(ChainableComparator.class,Comparator.class,Comparator.class)).isNotNull();
-      assertThat(nonFinalTestee.getConstructor(ChainableComparator.class,Comparator.class)).isNotNull();
+      assertThat(twoComparatorTestee.getConstructor(ChainableComparator.class, Comparator.class, Comparator.class)).isNotNull();
+      assertThat(nonFinalTestee.getConstructor(ChainableComparator.class, Comparator.class)).isNotNull();
     }
 
     @Test
@@ -71,7 +76,7 @@ class ChainComparatorGeneratorTest {
 
     @Test
     @DisplayName("should add as many chain method as types")
-    void testChain(){
+    void testChain() {
       assertThat(Arrays.stream(finalTestee.getMethods())
           .map(Method::getName)
           .filter(s -> s.equals("chain"))

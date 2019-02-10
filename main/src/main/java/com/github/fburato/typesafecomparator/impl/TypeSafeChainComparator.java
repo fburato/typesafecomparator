@@ -27,14 +27,14 @@ public final class TypeSafeChainComparator<T> implements ChainableComparator<T> 
     return createWithDecorator(ComparatorDecorators.nullSafe);
   }
 
-  public static <S> TypeSafeChainComparator<S> createWithDecorator(ComparatorDecorator decorator){
+  public static <S> TypeSafeChainComparator<S> createWithDecorator(ComparatorDecorator decorator) {
     return new TypeSafeChainComparator<>(decorator);
   }
 
   @Override
-  public <S> TypeSafeChainComparator<T> chain(final Function<T,S> fieldGetter, final Comparator<S> comparator) {
+  public <S> TypeSafeChainComparator<T> chain(final Function<T, S> fieldGetter, final Comparator<S> comparator) {
     final Comparator<S> decorated = comparatorDecorator.decorate(comparator);
-    comparisons.add((o1,o2) -> decorated.compare(fieldGetter.apply(o1),fieldGetter.apply(o2)));
+    comparisons.add((o1, o2) -> decorated.compare(fieldGetter.apply(o1), fieldGetter.apply(o2)));
     return this;
   }
 
@@ -49,7 +49,7 @@ public final class TypeSafeChainComparator<T> implements ChainableComparator<T> 
     return 0;
   }
 
-  public <T1> ChainComparator1<T,T1> addComparator(Comparator<T1> comparator1) {
-    return new ChainComparator1<>(this,comparator1);
+  public <T1> ChainComparator1<T, T1> addComparator(Comparator<T1> comparator1) {
+    return new ChainComparator1<>(this, comparator1);
   }
 }
