@@ -5,11 +5,11 @@ plugins {
 
 apply plugin: "jacoco"
 
+ext.moduleName = 'com.github.fburato.typesafecomparator.impl'
 
 jacoco {
     toolVersion = "0.8.1"
 }
-
 jacocoTestReport {
     reports {
         html.enabled = true
@@ -30,6 +30,15 @@ test {
         classDumpDir = file("$buildDir/jacoco/classpathdumps")
     }
 }
+
+
+jar {
+    inputs.property("moduleName", moduleName)
+    manifest {
+        attributes('Automatic-Module-Name': moduleName)
+    }
+}
+
 
 
 dependencies {

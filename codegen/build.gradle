@@ -2,16 +2,15 @@ plugins {
     id 'java'
 }
 
-
 apply plugin: "jacoco"
+
+
+ext.moduleName = 'com.github.fburato.typesafecomparator.api'
 
 
 jacoco {
     toolVersion = "0.8.1"
 }
-
-
-
 jacocoTestReport {
     reports {
         html.destination file("${buildDir}/jacocoHtml")
@@ -51,7 +50,7 @@ dependencies {
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.4.0")
 }
 
-task('generateClasses', type: JavaExec) {
+task generateClasses(type: JavaExec) {
     dependsOn('compileJava')
     main = "com.github.fburato.typesafecomparator.codegen.Generator"
     classpath = sourceSets.main.runtimeClasspath
@@ -68,6 +67,10 @@ task myCompile(type: JavaCompile) {
 
 jar {
     exclude('com/github/fburato/typesafecomparator/codegen/**')
+    inputs.property("moduleName", moduleName)
+    manifest {
+        attributes('Automatic-Module-Name': moduleName)
+    }
 }
 
 jar.dependsOn(myCompile)
