@@ -22,7 +22,7 @@ class ChainComparatorGeneratorTest {
   @BeforeAll
   static void setUpCompiler() {
     IntStream
-        .range(0,50)
+        .rangeClosed(1,50)
         .forEach( i -> assertCompiles(qualifiedClassName("Function"+i),new FunctionGenerator(i),compiler));
   }
 
